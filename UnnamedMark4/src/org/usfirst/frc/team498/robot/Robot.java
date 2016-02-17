@@ -1,9 +1,11 @@
 package org.usfirst.frc.team498.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.NamedSendable;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 
 /*
@@ -16,45 +18,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends SampleRobot {
 	//Drive
-	int leftDrivePWMPort = 1;
-	int rightDrivePWMPort = 0;
-	//Accessories
-	int leftIntakeCylinderExtendPort = 4;
-	int leftIntakeCylinderRetractPort = 5;
-	int rightIntakeCylinderExtendPort = 0;
-	int rightIntakeCylinderRetractPort = 3; 
-	int shooterLeftPort = 1;
-	int shooterRightPort = 2;
-	//Lifter
-	int lifterCANID = 0;
-	int intakeCANID = 1;
-	int innerBoundDIOPort = 0;
-	//Auto
-	int ultrasonicDIOInputPort = 1;
-	int ultrasonicDIOOutputPort = 2;
-	
+	Ports ports = new Ports();
 	Joystick thisStick = new Joystick(0);
-	Drive2016 drive = new Drive2016(thisStick, leftDrivePWMPort, rightDrivePWMPort, 30, 30);
-	IntakeAndShooter2016 accesories = new IntakeAndShooter2016(thisStick, rightIntakeCylinderExtendPort, rightIntakeCylinderRetractPort, leftIntakeCylinderExtendPort, leftIntakeCylinderRetractPort, intakeCANID, shooterLeftPort, shooterRightPort);
-	LifterArm2016 lifter = new LifterArm2016(thisStick, lifterCANID, innerBoundDIOPort);
+	Drive2016 drive = new Drive2016(thisStick, ports);
+	IntakeAndShooter2016 accessories = new IntakeAndShooter2016(thisStick, ports);
+	LifterArm2016 lifter = new LifterArm2016(thisStick, ports);
 	VisionManager2016 vm = new VisionManager2016();
-	AutonmousController autoController = new AutonmousController(drive, accesories, lifter, vm, ultrasonicDIOInputPort, ultrasonicDIOOutputPort);
+	AutonmousController autoController = new AutonmousController(drive, accessories, lifter, vm, ports);
+	PowerDistributionPanel pdp = new PowerDistributionPanel();
+	
+	
+	//SendableChooser sc = new SendableChooser();
 	
 	public void robotInit() {
-		
+		//sc.addDefault("The default", AutoSelector.LowBar);
+		//sc.addObject("Better", AutoSelector.LowBar);
 	}
 
 	// Select which autonomous to run
-	public void autonmous() {
-		autoController.autoInit(-1);
+	public void autonomous() {
+		/*autoController.autoInit(-1);
 		while(isAutonomous() && isEnabled()) {
 			autoController.autoLowBar();
-		}
+		}*/
 	}
 
 	public void operatorControl() {
-		accesories.retractShooter();
-		accesories.retractIntake();
+		accessories.retractShooter();
+		accessories.retractIntake();
 		while (isOperatorControl() && isEnabled()) {
 			
 			// Send stats to the driver
@@ -62,11 +53,11 @@ public class Robot extends SampleRobot {
 			// Drive the robot via controller
 			drive.rampedDriveListener();
 			// Listen for intake related commands
-			accesories.intakeListener();
+			accessories.intakeListener();
 			// Listen for actionArm related commands
-			accesories.rollerListener();
+			accessories.rollerListener();
 			// Listen for shooter related commands
-			accesories.shooterListener();
+			accessories.shooterListener();
 			// Listen for lifter related commands
 			lifter.baseListener();
 
@@ -76,11 +67,42 @@ public class Robot extends SampleRobot {
 
 	
 	
-	
+	public void disabled() {
+		while(isDisabled()) {
+			print();
+		} 
+		
+	}
 
 	// Sends information to the driver
 	private void print() {
+		SmartDashboard.putNumber("0", pdp.getCurrent(0));
+		SmartDashboard.putNumber("2", pdp.getCurrent(2));
+		SmartDashboard.putNumber("9", pdp.getCurrent(9));
+		SmartDashboard.putNumber("10", pdp.getCurrent(10));
+		SmartDashboard.putNumber("11", pdp.getCurrent(11));
+		SmartDashboard.putNumber("12", pdp.getCurrent(12));
+		SmartDashboard.putNumber("13", pdp.getCurrent(13));
+		SmartDashboard.putNumber("14", pdp.getCurrent(14));
+		
 		SmartDashboard.putBoolean("InnerBounds", lifter.innerBounds.get());
+		SmartDashboard.putBoolean("isCoolingDown", accessories.isShooterCoolingDown);
+		SmartDashboard.putNumber("Gyro angle", autoController.gyro.getAngle());
+		SmartDashboard.putNumber("Accel X", autoController.acc.getX());
+		SmartDashboard.putNumber("Accel Y", autoController.acc.getY());
+		SmartDashboard.putNumber("Accel Z", autoController.acc.getZ());
+		SmartDashboard.putNumber("Cooldown Clock", accessories.clock.get());
+		SmartDashboard.putBoolean("InnerBound", lifter.innerBounds.get());
+		SmartDashboard.putBoolean("Outer Bounds", lifter.outerBounds.get());
+		//SmartDashboard.putData("Auto Selector", sc);
+		autoController.vm.updateTables();
+		try{
+			//SmartDashboard.putNumber("Area Length", autoController.vm.areas.length);
+		} catch(Exception e) {
+			System.out.println(e);
+			System.out.println("areas is missing!!");
+		}
+		
 	}
 
 	

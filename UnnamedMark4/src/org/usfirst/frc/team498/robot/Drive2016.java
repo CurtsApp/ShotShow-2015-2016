@@ -7,15 +7,16 @@ public class Drive2016 {
 	private Joystick thisStick;
 	private RobotDrive drive;
 	private RampManager forwardDriveRamp;
+	private boolean isGoingForward = true;
 	RampManager turningDriveRamp;
 	double moveValue;
 	double turnValue;
 	
-	Drive2016(Joystick joystick, int leftDrivePWM, int rigthDrivePWM, double forwardRampIncreaseValue, double turningRampIncreaseValue) {
+	Drive2016(Joystick joystick, Ports ports) {
 	thisStick = joystick;
-	drive = new RobotDrive(leftDrivePWM, rigthDrivePWM);
-	forwardDriveRamp = new RampManager(forwardRampIncreaseValue);
-	turningDriveRamp = new RampManager(turningRampIncreaseValue);
+	drive = new RobotDrive(ports.leftDrivePWMPort, ports.rightDrivePWMPort);
+	forwardDriveRamp = new RampManager(ports.forwardRampIncreaseValue);
+	turningDriveRamp = new RampManager(ports.turningRampIncreaseValue);
 	}
 	// The robot's speed slowly increases over time.
 		public void rampedDriveListener() {
@@ -26,6 +27,7 @@ public class Drive2016 {
 			// Axis 0 is X Value of Left Stick
 			turningDriveRamp.rampTo(-thisStick.getRawAxis(0));
 			turnValue = turningDriveRamp.getCurrentValue();
+			reverseListener();
 			drive();
 			
 
@@ -33,10 +35,22 @@ public class Drive2016 {
 		public void ramplessDriveListener() {
 			  moveValue = thisStick.getRawAxis(3) - thisStick.getRawAxis(2);
 			 turnValue = -thisStick.getRawAxis(0);
+			 reverseListener();
 			 drive();
 		}
+		private void reverseListener() {
+			if(thisStick.getRawButton(5)) {
+				isGoingForward = true;
+			} else if(thisStick.getRawButton(6)) {
+				isGoingForward = false;
+			}
+		}
 		private void drive() {
-			drive.arcadeDrive(moveValue, turnValue);
+			if(isGoingForward) {
+				drive.arcadeDrive(moveValue, turnValue);
+			} else {
+				drive.arcadeDrive(-moveValue, turnValue);
+			}
 		}
 		
 		public void manualDrive(double move, double turn) {

@@ -23,38 +23,38 @@ public class RampManager {
 	RampManager (double percentIncreasePerSecond) {
 		rampSpeed = percentIncreasePerSecond;
 		currentValue = 0;
-		//clock.start(); //comment this flat
+		clock.start(); 
 		lastTime = 0;
 	}
 	
-	public void rampTo(double value) {
+	public void rampTo(double desiredValue) {
 		if (clock.get() <= 0){	//Start the clock if it hasn't started.
 			clock.start();
 		}
-		if(currentValue < value) {
+		if(currentValue < desiredValue) {
 			
 			currentValue = clock.get() * rampSpeed + currentValue;
 			if(currentValue > 1) {
 				currentValue = 1;
 			}
-			//clock.reset();	//cooment this flat
-		}else if(currentValue > value) {
+			clock.reset();	
+		}else if(currentValue > desiredValue) {
 			currentValue = clock.get() * -rampSpeed + currentValue;
 			if(currentValue < -1) {
 				currentValue = -1;
 			}
-			//clock.reset();	//comment this flat
+			clock.reset();	//comment this flat
 		} else {
 			clock.reset();
 		}
-		if(Math.abs(currentValue) >= Math.abs(value)){	//Stop the clock and reset if we have gotten to the value we want.
-			if (value < 0 && currentValue < 0){
-				currentValue = value;
-			} else if (value > 0 && currentValue > 0){
-				currentValue = value;
+		if(Math.abs(currentValue) >= Math.abs(desiredValue)){	//Stop the clock and reset if we have gotten to the value we want.
+			if (desiredValue < 0 && currentValue < 0){
+				currentValue = desiredValue;
+			} else if (desiredValue > 0 && currentValue > 0){
+				currentValue = desiredValue;
 			}
-			clock.stop();	//comment this kyle
-			clock.reset();	//comment this kyle
+			//clock.stop();	//comment this kyle
+			//clock.reset();	//comment this kyle
 		}
 	}
 	

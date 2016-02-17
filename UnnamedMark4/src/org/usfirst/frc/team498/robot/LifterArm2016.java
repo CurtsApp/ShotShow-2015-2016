@@ -9,11 +9,13 @@ public class LifterArm2016 {
 	Joystick thisStick;
 	CANTalon lifter;
 	DigitalInput innerBounds;
+	DigitalInput outerBounds;
 	
-	LifterArm2016(Joystick joystick,int lifterCANPort,int innerBoundSwitchDIOPort) {
+	LifterArm2016(Joystick joystick,Ports ports) {
 		thisStick = joystick;
-		lifter = new CANTalon(lifterCANPort);
-		innerBounds = new DigitalInput(innerBoundSwitchDIOPort);
+		lifter = new CANTalon(ports.lifterCANID);
+		innerBounds = new DigitalInput(ports.innerBoundDIOPort);
+		outerBounds = new DigitalInput(ports.outerBoundDIOPort);
 	}
 	public void baseListener() {
 
@@ -21,7 +23,7 @@ public class LifterArm2016 {
 				if (-thisStick.getRawAxis(5) < 0) {
 					setLifter(0);
 				} else {
-					setLifter(-thisStick.getRawAxis(5));
+					setLifter(thisStick.getRawAxis(5));
 				}
 
 			} 
@@ -37,11 +39,11 @@ public class LifterArm2016 {
 				}
 
 			}*/ else {
-				setLifter(-thisStick.getRawAxis(5));
+				setLifter(thisStick.getRawAxis(5));
 			}
 		}
 	
 	public void setLifter(double value){
-		lifter.set(value);
+		lifter.set(-value);
 	}
 }

@@ -1,6 +1,9 @@
 package org.usfirst.frc.team498.robot;
 
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionManager2016 {
 	NetworkTable visionTable;
@@ -13,7 +16,20 @@ public class VisionManager2016 {
 	public double[] centerYs;
 	
 	double widthToHeightRatio = 10 / 7;
+	String filename = "/home/lvuser/project.grip";
 	VisionManager2016() {
+		
+		/* Run GRIP in a new process */
+		
+
+        try {
+        	new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
+            SmartDashboard.putString("Grip", "Started");
+            System.out.println("Grip Process Started"); //Print to RioLog
+        } catch (Exception e) {
+            SmartDashboard.putString("Grip", "Is Bad News");
+            e.printStackTrace();
+        }
 		visionTable = NetworkTable.getTable("GRIP/myContoursReport");
 	}
 	
