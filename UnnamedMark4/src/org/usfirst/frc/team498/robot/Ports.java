@@ -5,8 +5,9 @@ public class Ports {
 
 	int leftDrivePWMPort = 1;
 	int rightDrivePWMPort = 0;
-	double forwardRampIncreaseValue = 1;
-	double turningRampIncreaseValue = 1;
+	double forwardRampIncreaseValue = 1.3;
+	double turningRampIncreaseValue = 1.3;
+	double speedCap = .8;
 			
 	//Accessories
 	int leftIntakeCylinderExtendPort = 1;

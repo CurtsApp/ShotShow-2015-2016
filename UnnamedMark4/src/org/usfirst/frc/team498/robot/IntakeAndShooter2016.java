@@ -21,7 +21,9 @@ public class IntakeAndShooter2016 {
 	public boolean isShooterCoolingDown;
 	//Roller Controllers
 	private boolean isRollerRunning;
-	private boolean wasButtonPressed;
+	private boolean wasRollerPressed = false;
+	private boolean wasShootPressed = false;
+	private boolean wasIntakePressed = false;
 	IntakeAndShooter2016(Joystick joystick, Ports ports){
 	thisStick = joystick;
 	clock = new Timer();
@@ -32,17 +34,17 @@ public class IntakeAndShooter2016 {
 	//6 and 7 are unused slots on PCM
 	shooter1 = new DoubleSolenoid(ports.shooterLeftPort, 6);
 	shooter2 = new DoubleSolenoid(ports.shooterRightPort,7);
-	wasButtonPressed = false;
+	wasRollerPressed = false;
 	isRollerRunning = false;
 	}
 	
 		public void rollerListener() {
-			if(thisStick.getRawButton(1) && wasButtonPressed == false) {
+			if(thisStick.getRawButton(1) && wasRollerPressed == false) {
 				isRollerRunning = !isRollerRunning;
-				wasButtonPressed = true;
+				wasRollerPressed = true;
 			}
-			if(wasButtonPressed == true && thisStick.getRawButton(1) == false) {
-				wasButtonPressed = false;
+			if(wasRollerPressed == true && thisStick.getRawButton(1) == false) {
+				wasRollerPressed = false;
 			}
 			
 			
@@ -60,21 +62,30 @@ public class IntakeAndShooter2016 {
 		public void shooterListener() {
 			if(thisStick.getRawButton(4)) {
 				shoot();
+				wasShootPressed = true;
+			}
+			
+			if(wasShootPressed && !thisStick.getRawButton(4)) {
+				wasShootPressed = false;
 			}
 			if(thisStick.getRawButton(7)) {
 				retractShooter();
 			}
+			
 			if(isShooterCoolingDown) {
-				if(clock.get() > 2) {
+				if(clock.get() > 1) {
 					isShooterCoolingDown = false;
 					retractShooter();
 				}
 			}
+			
+			
 		}
 		
 		private void shoot(){
 			
-			if(intakeLeft.get() == DoubleSolenoid.Value.kForward) {
+						
+			if(intakeLeft.get() == DoubleSolenoid.Value.kForward && !wasShootPressed) {
 				overrideShoot();
 				isShooterCoolingDown = true;
 				clock.reset();
@@ -115,14 +126,19 @@ public class IntakeAndShooter2016 {
 			intakeRight.set(DoubleSolenoid.Value.kReverse);
 		}
 		public void intakeListener() {
-			if(thisStick.getRawButton(3)){
-				retractIntake();
-				
-			}else if(thisStick.getRawButton(2)){
-				extendIntake();
-				
-			
+			if(thisStick.getRawButton(2) && wasIntakePressed == false) {
+				if(intakeLeft.get() == DoubleSolenoid.Value.kForward) {
+					retractIntake();
+				} else {
+					extendIntake();
+				}
+				wasIntakePressed = true;
 			}
+			if(wasIntakePressed == true && thisStick.getRawButton(2) == false) {
+				wasIntakePressed = false;
+			}
+			
+			
 		}
 		
 		

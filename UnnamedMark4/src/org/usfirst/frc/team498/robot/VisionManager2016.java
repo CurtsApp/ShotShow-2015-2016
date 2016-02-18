@@ -1,12 +1,13 @@
 package org.usfirst.frc.team498.robot;
 
-import java.io.IOException;
+
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionManager2016 {
 	NetworkTable visionTable;
+	NetworkTable newTable;
 	
 	double[] defaultValue = new double[0];
 	public double[] areas;
@@ -20,9 +21,7 @@ public class VisionManager2016 {
 	VisionManager2016() {
 		
 		/* Run GRIP in a new process */
-		
-
-        try {
+		try {
         	new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
             SmartDashboard.putString("Grip", "Started");
             System.out.println("Grip Process Started"); //Print to RioLog
@@ -31,6 +30,7 @@ public class VisionManager2016 {
             e.printStackTrace();
         }
 		visionTable = NetworkTable.getTable("GRIP/myContoursReport");
+		newTable = visionTable;
 	}
 	
 	public int getBestCantidateIndex() {

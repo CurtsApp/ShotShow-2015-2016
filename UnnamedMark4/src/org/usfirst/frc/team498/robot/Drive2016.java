@@ -8,15 +8,22 @@ public class Drive2016 {
 	private RobotDrive drive;
 	private RampManager forwardDriveRamp;
 	private boolean isGoingForward = true;
+	private boolean isSpeedReduced = false;
+	private boolean wasTransmitionPressed = false;
+	double speedCap;
+	
 	RampManager turningDriveRamp;
-	double moveValue;
-	double turnValue;
+	public double moveValue;
+	public double turnValue;
+	
+
 	
 	Drive2016(Joystick joystick, Ports ports) {
 	thisStick = joystick;
 	drive = new RobotDrive(ports.leftDrivePWMPort, ports.rightDrivePWMPort);
 	forwardDriveRamp = new RampManager(ports.forwardRampIncreaseValue);
 	turningDriveRamp = new RampManager(ports.turningRampIncreaseValue);
+	speedCap = ports.speedCap;
 	}
 	// The robot's speed slowly increases over time.
 		public void rampedDriveListener() {
@@ -27,6 +34,7 @@ public class Drive2016 {
 			// Axis 0 is X Value of Left Stick
 			turningDriveRamp.rampTo(-thisStick.getRawAxis(0));
 			turnValue = turningDriveRamp.getCurrentValue();
+			transmitionListener();
 			reverseListener();
 			drive();
 			
@@ -35,6 +43,7 @@ public class Drive2016 {
 		public void ramplessDriveListener() {
 			  moveValue = thisStick.getRawAxis(3) - thisStick.getRawAxis(2);
 			 turnValue = -thisStick.getRawAxis(0);
+			 transmitionListener();
 			 reverseListener();
 			 drive();
 		}
@@ -45,11 +54,29 @@ public class Drive2016 {
 				isGoingForward = false;
 			}
 		}
+		private void transmitionListener() {
+			if(thisStick.getRawButton(3) && !wasTransmitionPressed) {
+				isSpeedReduced = !isSpeedReduced;
+				wasTransmitionPressed = true;
+			}
+			if(wasTransmitionPressed && thisStick.getRawButton(3)) {
+				wasTransmitionPressed = false;
+			}
+		}
 		private void drive() {
-			if(isGoingForward) {
-				drive.arcadeDrive(moveValue, turnValue);
+			double moveValue_f;
+			double turnValue_f;
+			if(isSpeedReduced) {
+				moveValue_f = moveValue * speedCap;
+				turnValue_f = turnValue * speedCap;
 			} else {
-				drive.arcadeDrive(-moveValue, turnValue);
+				moveValue_f = moveValue;
+				turnValue_f = turnValue;
+			}
+			if(isGoingForward) {
+				drive.arcadeDrive(moveValue_f, turnValue_f);
+			} else {
+				drive.arcadeDrive(-moveValue_f, turnValue_f);
 			}
 		}
 		

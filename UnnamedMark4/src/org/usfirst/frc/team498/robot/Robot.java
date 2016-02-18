@@ -28,24 +28,32 @@ public class Robot extends SampleRobot {
 	PowerDistributionPanel pdp = new PowerDistributionPanel();
 	
 	
-	//SendableChooser sc = new SendableChooser();
+	SendableChooser sc = new SendableChooser();
 	
 	public void robotInit() {
-		//sc.addDefault("The default", AutoSelector.LowBar);
-		//sc.addObject("Better", AutoSelector.LowBar);
+		sc.addDefault("The default", AutoSelector.LowBar);
+		sc.addObject("Better", AutoSelector.LowBar);
 	}
 
 	// Select which autonomous to run
 	public void autonomous() {
-		/*autoController.autoInit(-1);
+		autoController.autoInit(-1);
 		while(isAutonomous() && isEnabled()) {
-			autoController.autoLowBar();
-		}*/
+			if((AutoSelector)sc.getSelected() == AutoSelector.LowBar) {
+				autoController.autoLowBar();
+			} else {
+				System.out.println("Selector did not match any know pattern");
+			}
+			print();
+			
+		}
 	}
 
 	public void operatorControl() {
 		accessories.retractShooter();
 		accessories.retractIntake();
+		drive.moveValue = 0;
+		drive.turnValue = 0;
 		while (isOperatorControl() && isEnabled()) {
 			
 			// Send stats to the driver
@@ -76,11 +84,9 @@ public class Robot extends SampleRobot {
 
 	// Sends information to the driver
 	private void print() {
-		SmartDashboard.putNumber("0", pdp.getCurrent(0));
+
 		SmartDashboard.putNumber("2", pdp.getCurrent(2));
-		SmartDashboard.putNumber("9", pdp.getCurrent(9));
-		SmartDashboard.putNumber("10", pdp.getCurrent(10));
-		SmartDashboard.putNumber("11", pdp.getCurrent(11));
+
 		SmartDashboard.putNumber("12", pdp.getCurrent(12));
 		SmartDashboard.putNumber("13", pdp.getCurrent(13));
 		SmartDashboard.putNumber("14", pdp.getCurrent(14));
@@ -95,9 +101,11 @@ public class Robot extends SampleRobot {
 		SmartDashboard.putBoolean("InnerBound", lifter.innerBounds.get());
 		SmartDashboard.putBoolean("Outer Bounds", lifter.outerBounds.get());
 		//SmartDashboard.putData("Auto Selector", sc);
+		
 		autoController.vm.updateTables();
+		
 		try{
-			//SmartDashboard.putNumber("Area Length", autoController.vm.areas.length);
+			SmartDashboard.putNumber("Area Length", autoController.vm.areas.length);
 		} catch(Exception e) {
 			System.out.println(e);
 			System.out.println("areas is missing!!");

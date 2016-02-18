@@ -60,7 +60,7 @@ public class AutonmousController {
 			case -1:
 				// Move Arm Down
 				lifter.setLifter(.6);
-				if(clock.get() > 2){
+				if(clock.get() > .8){
 					lifter.setLifter(0);
 					clock.stop();
 					clock.reset();
@@ -71,12 +71,12 @@ public class AutonmousController {
 			case 0:
 					// Drive through low bar
 					
-					drive.manualDrive(.8, gyro.getAngle());
+					drive.manualDrive(-.8, 0 /*gyro.getAngle()*/);
 					if (acc.getZ() > accelorometerPeak) {
 						clock.start();
 					}
 					if (clock.get() > 1) {
-						phase++;
+						phase=40;
 					}
 					break;
 				case 1:
@@ -128,7 +128,9 @@ public class AutonmousController {
 					accessories.extendIntake();
 					Timer.delay(.5);
 					accessories.overrideShoot();
-					
+					break;
+				case 40:
+					break;
 
 				}
 		}
