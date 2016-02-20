@@ -36,9 +36,13 @@ public class Robot extends SampleRobot {
 
 	// Select which autonomous to run
 	public void autonomous() {
-		autoController.setup((AutoSelector)sc.getSelected());
+		autoController.autoInit(-1);
 		while(isAutonomous() && isEnabled()) {
-			autoController.execute();
+			if((AutoSelector)sc.getSelected() == AutoSelector.LowBar) {
+				autoController.autoLowBar();
+			} else {
+				System.out.println("Selector did not match any know pattern");
+			}
 			print();
 			
 		}
