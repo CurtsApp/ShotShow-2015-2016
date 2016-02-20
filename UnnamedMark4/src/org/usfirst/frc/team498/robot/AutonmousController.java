@@ -9,7 +9,7 @@ public class AutonmousController {
 	public ADXRS450_Gyro gyro;
 	public BuiltInAccelerometer acc;
 	private Timer clock;
-	private Ultrasonic ultra;
+	private MaxbotixUltrasonic ultra;
 	private Drive2016 drive;
 	private IntakeAndShooter2016 accessories;
 	public VisionManager2016 vm;
@@ -31,7 +31,7 @@ public class AutonmousController {
 		drive = drive_a;
 		accessories = intakeAndShooter;
 		lifter = lifter_a;
-		ultra = new Ultrasonic(ports.ultrasonicDIOInputPort, ports.ultrasonicDIOOutputPort);
+		ultra = new MaxbotixUltrasonic(ports.ultrasonicDIOInputPort, ports.ultrasonicDIOOutputPort);
 		vm = grip;
 		
 		gyro = new ADXRS450_Gyro();

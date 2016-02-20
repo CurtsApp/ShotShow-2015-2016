@@ -48,12 +48,13 @@ public class Robot extends SampleRobot {
 			
 		}
 	}
-
+	
 	public void operatorControl() {
 		accessories.retractShooter();
 		accessories.retractIntake();
 		drive.moveValue = 0;
 		drive.turnValue = 0;
+	
 		while (isOperatorControl() && isEnabled()) {
 			
 			// Send stats to the driver
