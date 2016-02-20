@@ -24,17 +24,23 @@ public class LifterArm2016 {
 				setLifter(false);
 			}
 		}
-	
+	public void extend() {
+		lifter.set(DoubleSolenoid.Value.kForward);
+	}
+	public void retract() {
+		lifter.set(DoubleSolenoid.Value.kReverse);
+	}
 	public void setLifter(boolean isForward){
 		if(isForward) {
-			lifter.set(DoubleSolenoid.Value.kForward);
+			extend();
 		} else {
-			lifter.set(DoubleSolenoid.Value.kReverse);
+			retract();
 		}
 	}
 	
 	private DoubleSolenoid.Value getLifterState() {
 		return lifter.get();
 	}
+	
 	
 }
