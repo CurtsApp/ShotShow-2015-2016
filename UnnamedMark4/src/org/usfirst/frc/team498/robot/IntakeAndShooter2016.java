@@ -11,8 +11,8 @@ public class IntakeAndShooter2016 {
 	DoubleSolenoid intakeLeft;
 	DoubleSolenoid intakeRight;
 	CANTalon roller;
-	DoubleSolenoid shooter1;
-	DoubleSolenoid shooter2;
+	DoubleSolenoid shooter;
+
 
 	// Shooter Controllers
 	public Timer clock;
@@ -33,8 +33,8 @@ public class IntakeAndShooter2016 {
 				ports.leftIntakeCylinderRetractPort);
 		clock.start();
 		// 6 and 7 are unused slots on PCM
-		shooter1 = new DoubleSolenoid(ports.shooterLeftPort, 6);
-		shooter2 = new DoubleSolenoid(ports.shooterRightPort, 7);
+		shooter = new DoubleSolenoid(ports.shooterLeftPort, 6);
+
 		wasRollerPressed = false;
 		isRollerRunning = false;
 	}
@@ -97,14 +97,13 @@ public class IntakeAndShooter2016 {
 	 * ONLY FOR USE IN AUTONMOUS
 	 */
 	public void overrideShoot() {
-		shooter1.set(DoubleSolenoid.Value.kForward);
-		shooter2.set(DoubleSolenoid.Value.kForward);
-
+		shooter.set(DoubleSolenoid.Value.kForward);
+		
 	}
 
 	public void retractShooter() {
-		shooter1.set(DoubleSolenoid.Value.kReverse);
-		shooter2.set(DoubleSolenoid.Value.kReverse);
+		shooter.set(DoubleSolenoid.Value.kReverse);
+		
 	}
 
 	public void turnRollerOn() {

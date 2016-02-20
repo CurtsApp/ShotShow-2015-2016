@@ -15,12 +15,12 @@ public class Ports {
 	int rightIntakeCylinderExtendPort = 4;
 	int rightIntakeCylinderRetractPort = 5; 
 	int shooterLeftPort = 2;
-	int shooterRightPort = 3;
+
 	//Lifter
-	int lifterCANID = 0;
+	int lifterCylinderExtendPort = 3;
+	int lifterCylinderRetractPort = 7;
 	int intakeCANID = 1;
-	int innerBoundDIOPort = 0;
-	int outerBoundDIOPort = 1;
+
 	//Auto
 	int ultrasonicDIOInputPort = 2;
 	int ultrasonicDIOOutputPort = 3;

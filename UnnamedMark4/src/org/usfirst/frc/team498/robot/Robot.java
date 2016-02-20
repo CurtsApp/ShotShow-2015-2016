@@ -91,15 +91,14 @@ public class Robot extends SampleRobot {
 		SmartDashboard.putNumber("13", pdp.getCurrent(13));
 		SmartDashboard.putNumber("14", pdp.getCurrent(14));
 		
-		SmartDashboard.putBoolean("InnerBounds", lifter.innerBounds.get());
+
 		SmartDashboard.putBoolean("isCoolingDown", accessories.isShooterCoolingDown);
 		SmartDashboard.putNumber("Gyro angle", autoController.gyro.getAngle());
 		SmartDashboard.putNumber("Accel X", autoController.acc.getX());
 		SmartDashboard.putNumber("Accel Y", autoController.acc.getY());
 		SmartDashboard.putNumber("Accel Z", autoController.acc.getZ());
 		SmartDashboard.putNumber("Cooldown Clock", accessories.clock.get());
-		SmartDashboard.putBoolean("InnerBound", lifter.innerBounds.get());
-		SmartDashboard.putBoolean("Outer Bounds", lifter.outerBounds.get());
+
 		//SmartDashboard.putData("Auto Selector", sc);
 		
 		autoController.vm.updateTables();
