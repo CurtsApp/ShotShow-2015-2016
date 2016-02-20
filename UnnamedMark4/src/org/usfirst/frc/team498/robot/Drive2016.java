@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class Drive2016 {
-	private Joystick thisStick;
+	private FancyJoystick thisStick;
 	private RobotDrive drive;
 	private RampManager forwardDriveRamp;
 	private boolean isGoingForward = true;
@@ -16,7 +16,7 @@ public class Drive2016 {
 	public double moveValue;
 	public double turnValue;
 
-	Drive2016(Joystick joystick, Ports ports) {
+	Drive2016(FancyJoystick joystick, Ports ports) {
 		thisStick = joystick;
 		drive = new RobotDrive(ports.leftDrivePWMPort, ports.rightDrivePWMPort);
 		forwardDriveRamp = new RampManager(ports.forwardRampIncreaseValue);
@@ -27,11 +27,11 @@ public class Drive2016 {
 	// The robot's speed slowly increases over time.
 	public void rampedDriveListener() {
 		// Axis 3 is RT Axis 2 is LT
-		forwardDriveRamp.rampTo(thisStick.getRawAxis(3)
-				- thisStick.getRawAxis(2));
+		forwardDriveRamp.rampTo(thisStick.getAxis(Axis.RightTrigger)
+				- thisStick.getAxis(Axis.LeftTrigger));
 		moveValue = forwardDriveRamp.getCurrentValue();
 		// Axis 0 is X Value of Left Stick
-		turningDriveRamp.rampTo(-thisStick.getRawAxis(0));
+		turningDriveRamp.rampTo(-thisStick.getAxis(Axis.LeftX));
 		turnValue = turningDriveRamp.getCurrentValue();
 		transmitionListener();
 		reverseListener();
@@ -40,27 +40,27 @@ public class Drive2016 {
 	}
 
 	public void ramplessDriveListener() {
-		moveValue = thisStick.getRawAxis(3) - thisStick.getRawAxis(2);
-		turnValue = -thisStick.getRawAxis(0);
+		moveValue = thisStick.getAxis(Axis.RightTrigger) - thisStick.getAxis(Axis.LeftTrigger);
+		turnValue = -thisStick.getAxis(Axis.LeftX);
 		transmitionListener();
 		reverseListener();
 		drive();
 	}
 
 	private void reverseListener() {
-		if (thisStick.getRawButton(5)) {
+		if (thisStick.getButton(Button.LeftBumper)) {
 			isGoingForward = true;
-		} else if (thisStick.getRawButton(6)) {
+		} else if (thisStick.getButton(Button.RightBumper)) {
 			isGoingForward = false;
 		}
 	}
 
 	private void transmitionListener() {
-		if (thisStick.getRawButton(3) && !wasTransmitionPressed) {
+		if (thisStick.getButton(Button.X) && !wasTransmitionPressed) {
 			isSpeedReduced = !isSpeedReduced;
 			wasTransmitionPressed = true;
 		}
-		if (wasTransmitionPressed && thisStick.getRawButton(3)) {
+		if (wasTransmitionPressed && thisStick.getButton(Button.X)) {
 			wasTransmitionPressed = false;
 		}
 	}

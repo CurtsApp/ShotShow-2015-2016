@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class LifterArm2016 {
 	// Handle action arm related inputs and outputs
-	Joystick thisStick;
+	FancyJoystick thisStick;
 	CANTalon lifter;
 	DigitalInput innerBounds;
 	DigitalInput outerBounds;
 	
-	LifterArm2016(Joystick joystick,Ports ports) {
+	LifterArm2016(FancyJoystick joystick,Ports ports) {
 		thisStick = joystick;
 		lifter = new CANTalon(ports.lifterCANID);
 		innerBounds = new DigitalInput(ports.innerBoundDIOPort);
@@ -20,10 +20,10 @@ public class LifterArm2016 {
 	public void baseListener() {
 
 			if (!innerBounds.get()) {
-				if (-thisStick.getRawAxis(5) < 0) {
+				if (-thisStick.getAxis(Axis.RightY) < 0) {
 					setLifter(0);
 				} else {
-					setLifter(thisStick.getRawAxis(5));
+					setLifter(thisStick.getAxis(Axis.RightY));
 				}
 
 			} 
@@ -39,7 +39,7 @@ public class LifterArm2016 {
 				}
 
 			}*/ else {
-				setLifter(thisStick.getRawAxis(5));
+				setLifter(thisStick.getAxis(Axis.RightY));
 			}
 		}
 	

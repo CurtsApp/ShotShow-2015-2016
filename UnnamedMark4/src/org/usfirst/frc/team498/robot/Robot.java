@@ -1,7 +1,6 @@
 package org.usfirst.frc.team498.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.NamedSendable;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends SampleRobot {
 	//Drive
 	Ports ports = new Ports();
-	Joystick thisStick = new Joystick(0);
+	FancyJoystick thisStick = new FancyJoystick(0);
 	Drive2016 drive = new Drive2016(thisStick, ports);
 	IntakeAndShooter2016 accessories = new IntakeAndShooter2016(thisStick, ports);
 	LifterArm2016 lifter = new LifterArm2016(thisStick, ports);
