@@ -23,8 +23,7 @@ public class Robot extends SampleRobot {
 	Drive2016 drive = new Drive2016(thisStick, ports);
 	IntakeAndShooter2016 accessories = new IntakeAndShooter2016(thisStick, ports);
 	LifterArm2016 lifter = new LifterArm2016(thisStick, ports);
-	VisionManager2016 vm = new VisionManager2016();
-	AutonmousController autoController = new AutonmousController(drive, accessories, lifter, vm, ports);
+	AutonmousController autoController = new AutonmousController(drive, accessories, lifter, ports);
 	PowerDistributionPanel pdp = new PowerDistributionPanel();
 	
 	
@@ -96,7 +95,6 @@ public class Robot extends SampleRobot {
 		
 
 		SmartDashboard.putBoolean("isCoolingDown", accessories.isShooterCoolingDown);
-		SmartDashboard.putNumber("Gyro angle", autoController.gyro.getAngle());
 		SmartDashboard.putNumber("Accel X", autoController.acc.getX());
 		SmartDashboard.putNumber("Accel Y", autoController.acc.getY());
 		SmartDashboard.putNumber("Accel Z", autoController.acc.getZ());

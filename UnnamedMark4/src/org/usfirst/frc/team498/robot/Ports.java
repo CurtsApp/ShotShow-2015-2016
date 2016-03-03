@@ -22,8 +22,6 @@ public class Ports {
 	int lifterCylinderRetractPort = 6;
 	int intakeCANID = 1;
 
-	//Auto
-	int ultrasonicDIOInputPort = 2;
-	int ultrasonicDIOOutputPort = 3;
+
 	
 }

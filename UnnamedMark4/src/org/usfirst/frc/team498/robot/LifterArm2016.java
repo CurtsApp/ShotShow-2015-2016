@@ -33,7 +33,7 @@ public class LifterArm2016 {
 		
 	}
 
-	private DoubleSolenoid.Value getLifterState() {
+	public DoubleSolenoid.Value getLifterState() {
 		return lifter.get();
 	}
 
