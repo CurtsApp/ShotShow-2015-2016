@@ -1,6 +1,7 @@
 package org.usfirst.frc.team498.robot;
 
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,17 +33,19 @@ public class Robot extends SampleRobot {
 	public void robotInit() {
 		sc.addDefault("The default", AutoSelector.LowBar);
 		sc.addObject("Better", AutoSelector.LowBar);
+		
 	}
 
 	// Select which autonomous to run
 	public void autonomous() {
 		autoController.autoInit(-1);
 		while(isAutonomous() && isEnabled()) {
-			if((AutoSelector)sc.getSelected() == AutoSelector.LowBar) {
+			/*if((AutoSelector)sc.getSelected() == AutoSelector.LowBar) {
 				autoController.autoLowBar();
 			} else {
-				System.out.println("Selector did not match any know pattern");
-			}
+				System.out.println("Selector did not match any known pattern");
+			}*/
+			autoController.autoLowBar();
 			print();
 			
 		}
@@ -98,17 +101,23 @@ public class Robot extends SampleRobot {
 		SmartDashboard.putNumber("Accel Y", autoController.acc.getY());
 		SmartDashboard.putNumber("Accel Z", autoController.acc.getZ());
 		SmartDashboard.putNumber("Cooldown Clock", accessories.clock.get());
+		if(accessories.intakeLeft.get() == DoubleSolenoid.Value.kForward) {
+			SmartDashboard.putString("Intake is", "kForward");
+		} else {
+			SmartDashboard.putString("Intake is", "kReverse");
+		}
+		
 
 		//SmartDashboard.putData("Auto Selector", sc);
 		
-		autoController.vm.updateTables();
-		
+		//autoController.vm.updateTables();
+		/*
 		try{
 			SmartDashboard.putNumber("Area Length", autoController.vm.areas.length);
 		} catch(Exception e) {
 			System.out.println(e);
 			System.out.println("areas is missing!!");
-		}
+		}*/
 		
 	}
 

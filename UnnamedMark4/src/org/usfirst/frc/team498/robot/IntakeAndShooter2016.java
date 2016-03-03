@@ -2,7 +2,6 @@ package org.usfirst.frc.team498.robot;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 
 public class IntakeAndShooter2016 {
@@ -12,7 +11,6 @@ public class IntakeAndShooter2016 {
 	DoubleSolenoid intakeRight;
 	CANTalon roller;
 	DoubleSolenoid shooter;
-
 
 	// Shooter Controllers
 	public Timer clock;
@@ -33,7 +31,8 @@ public class IntakeAndShooter2016 {
 				ports.leftIntakeCylinderRetractPort);
 		clock.start();
 		// 6 and 7 are unused slots on PCM
-		shooter = new DoubleSolenoid(ports.shooterLeftPort, 6);
+		shooter = new DoubleSolenoid(ports.shooterExtendPort,
+				ports.shooterRetractPort);
 
 		wasRollerPressed = false;
 		isRollerRunning = false;
@@ -59,7 +58,7 @@ public class IntakeAndShooter2016 {
 	}
 
 	public void shooterListener() {
-		if (thisStick.getButton(Button.X)) {
+		if (thisStick.getButton(Button.Y)) {
 			shoot();
 			wasShootPressed = true;
 		}
@@ -98,12 +97,12 @@ public class IntakeAndShooter2016 {
 	 */
 	public void overrideShoot() {
 		shooter.set(DoubleSolenoid.Value.kForward);
-		
+
 	}
 
 	public void retractShooter() {
 		shooter.set(DoubleSolenoid.Value.kReverse);
-		
+
 	}
 
 	public void turnRollerOn() {
@@ -124,6 +123,7 @@ public class IntakeAndShooter2016 {
 	}
 
 	public void retractIntake() {
+		//extendIntake();
 		intakeLeft.set(DoubleSolenoid.Value.kReverse);
 		intakeRight.set(DoubleSolenoid.Value.kReverse);
 	}

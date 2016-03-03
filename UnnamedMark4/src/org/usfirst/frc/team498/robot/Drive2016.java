@@ -1,6 +1,6 @@
 package org.usfirst.frc.team498.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class Drive2016 {
@@ -27,8 +27,7 @@ public class Drive2016 {
 	// The robot's speed slowly increases over time.
 	public void rampedDriveListener() {
 		// Axis 3 is RT Axis 2 is LT
-		forwardDriveRamp.rampTo(thisStick.getAxis(Axis.RightTrigger)
-				- thisStick.getAxis(Axis.LeftTrigger));
+		forwardDriveRamp.rampTo(thisStick.getAxis(Axis.RightTrigger) - thisStick.getAxis(Axis.LeftTrigger));
 		moveValue = forwardDriveRamp.getCurrentValue();
 		// Axis 0 is X Value of Left Stick
 		turningDriveRamp.rampTo(-thisStick.getAxis(Axis.LeftX));
@@ -40,7 +39,8 @@ public class Drive2016 {
 	}
 
 	public void ramplessDriveListener() {
-		moveValue = thisStick.getAxis(Axis.RightTrigger) - thisStick.getAxis(Axis.LeftTrigger);
+		moveValue = thisStick.getAxis(Axis.RightTrigger)
+				- thisStick.getAxis(Axis.LeftTrigger);
 		turnValue = -thisStick.getAxis(Axis.LeftX);
 		transmitionListener();
 		reverseListener();

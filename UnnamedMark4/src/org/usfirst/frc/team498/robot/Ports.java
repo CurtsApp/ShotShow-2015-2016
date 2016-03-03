@@ -14,11 +14,12 @@ public class Ports {
 	int leftIntakeCylinderRetractPort = 0;
 	int rightIntakeCylinderExtendPort = 4;
 	int rightIntakeCylinderRetractPort = 5; 
-	int shooterLeftPort = 2;
+	int shooterExtendPort = 2;
+	int shooterRetractPort = 7;
 
 	//Lifter
 	int lifterCylinderExtendPort = 3;
-	int lifterCylinderRetractPort = 7;
+	int lifterCylinderRetractPort = 6;
 	int intakeCANID = 1;
 
 	//Auto
